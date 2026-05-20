@@ -108,7 +108,7 @@ export const siteConfig: SiteConfig = {
 
 // Navigation
 export const navigationConfig: NavigationConfig = {
-  brandName: "PETPAL",
+  brandName: "HAPPY TAILS iNDIA",
   links: [
     { label: "SHOP", target: "#products" },
     { label: "CATEGORIES", target: "#anatomy" },
