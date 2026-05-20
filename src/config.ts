@@ -102,13 +102,13 @@ export interface FooterConfig {
 // Site config
 export const siteConfig: SiteConfig = {
   language: "en",
-  siteTitle: "PetPal - Premium Pet Supplies",
+  siteTitle: "HappyTailsIndia - Premium Pet Supplies",
   siteDescription: "Handpicked toys, beds, and essentials for dogs, cats, birds, and small pets. Free shipping on orders over $50.",
 }
 
 // Navigation
 export const navigationConfig: NavigationConfig = {
-  brandName: "HAPPY TAILS iNDIA",
+  brandName: "HAPPY TAILS INDIA",
   links: [
     { label: "SHOP", target: "#products" },
     { label: "CATEGORIES", target: "#anatomy" },
@@ -338,7 +338,7 @@ export const testimonials: Testimonial[] = [
 // Footer
 export const footerConfig: FooterConfig = {
   ageGateText: "Because they're family.",
-  brandName: "PETPAL",
+  brandName: "Happy Tails India",
   brandTaglineLines: ["Premium pet essentials for every kind of companion."],
   columns: [
     {
@@ -380,5 +380,5 @@ export const footerConfig: FooterConfig = {
       ],
     },
   ],
-  copyright: "\u00a9 2025 PetPal. All rights reserved.",
+  copyright: "\u00a9 2025 HappyTailsIndia. All rights reserved.",
 }
