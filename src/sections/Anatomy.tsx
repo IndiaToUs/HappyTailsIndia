@@ -53,12 +53,7 @@ export default function Anatomy() {
       }}
     >
       {/* Section Header */}
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '100px 24px 40px',
-        }}
-      >
+      <div style={{ textAlign: 'center', padding: '60px 24px 40px' }}>
         {anatomyConfig.sectionLabel && (
           <p
             style={{
@@ -78,7 +73,7 @@ export default function Anatomy() {
           <h2
             style={{
               fontFamily: '"Cormorant Garamond", Georgia, serif',
-              fontSize: '42px',
+              fontSize: 'clamp(28px, 4vw, 42px)',
               fontWeight: 500,
               lineHeight: 1.2,
               color: '#180c04',
@@ -89,46 +84,24 @@ export default function Anatomy() {
         )}
       </div>
 
-      {/* Split Layout */}
-      <div
-        style={{
-          display: 'flex',
-          maxWidth: '1400px',
-          margin: '0 auto',
-          minHeight: '100vh',
-        }}
-      >
-        {/* Left: Sticky HeritageHelix */}
-        <div
-          style={{
-            width: '50%',
-            position: 'sticky',
-            top: 0,
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          className="hidden md:flex"
-        >
-          <div style={{ width: '100%', height: '80vh' }}>
+      {/* Desktop: Split Layout, Mobile: Single Column */}
+      <div className="anatomy-layout">
+
+        {/* Left: Sticky HeritageHelix — desktop only */}
+        <div className="anatomy-helix-panel">
+          <div style={{ width: '100%', height: '60vh' }}>
             <HeritageHelix />
           </div>
         </div>
 
-        {/* Right: Scrolling Content */}
-        <div
-          style={{
-            padding: '0 48px',
-          }}
-          className="w-full md:w-1/2"
-        >
+        {/* Right: Scrolling Pillars */}
+        <div className="anatomy-content-panel">
           {pillars.map((pillar, i) => (
             <div
               key={pillar.label}
               ref={(el) => { pillarRefs.current[i] = el; }}
               style={{
-                padding: '15vh 0',
+                padding: '48px 0',
                 borderBottom: i < pillars.length - 1 ? '1px solid rgba(24, 12, 4, 0.1)' : 'none',
               }}
             >
@@ -148,7 +121,7 @@ export default function Anatomy() {
               <h3
                 style={{
                   fontFamily: '"Cormorant Garamond", Georgia, serif',
-                  fontSize: '26px',
+                  fontSize: 'clamp(20px, 3vw, 26px)',
                   fontWeight: 600,
                   lineHeight: 1.3,
                   color: '#180c04',
@@ -164,7 +137,6 @@ export default function Anatomy() {
                   fontWeight: 400,
                   lineHeight: 1.6,
                   color: '#696969',
-                  maxWidth: '480px',
                   marginBottom: '20px',
                 }}
               >
@@ -203,6 +175,48 @@ export default function Anatomy() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        .anatomy-layout {
+          display: flex;
+          flex-direction: column;
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 0 24px 60px;
+        }
+
+        .anatomy-helix-panel {
+          display: none;
+        }
+
+        .anatomy-content-panel {
+          width: 100%;
+          padding: 0;
+        }
+
+        @media (min-width: 768px) {
+          .anatomy-layout {
+            flex-direction: row;
+            padding: 0 24px 80px;
+          }
+
+          .anatomy-helix-panel {
+            display: flex;
+            width: 50%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+          }
+
+          .anatomy-content-panel {
+            width: 50%;
+            padding: 0 48px;
+          }
+        }
+      `}</style>
     </section>
   );
 }
