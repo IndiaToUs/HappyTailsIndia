@@ -20,14 +20,7 @@ function StarRating({ rating }: { rating: number }) {
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       ))}
-      <span
-        style={{
-          fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: '11px',
-          color: '#696969',
-          marginLeft: '4px',
-        }}
-      >
+      <span style={{ fontFamily: 'Inter, system-ui, sans-serif', fontSize: '11px', color: '#696969', marginLeft: '4px' }}>
         ({rating})
       </span>
     </div>
@@ -45,47 +38,39 @@ export default function Products() {
         if (!el) return;
         gsap.fromTo(
           el,
-          { opacity: 0, y: 50 },
+          { opacity: 0, y: 30 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            delay: i * 0.08,
+            duration: 0.6,
+            delay: i * 0.06,
             ease: 'power2.out',
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 70%',
-              toggleActions: 'play none none reverse',
+              start: 'top 80%',
+              toggleActions: 'play none none none',
             },
           }
         );
       });
     }, sectionRef);
-
     return () => ctx.revert();
   }, []);
 
   const handleAddToCart = (_productId: number) => {
     setCartCount((prev) => prev + 1);
-    // Dispatch event for nav cart badge
     window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: cartCount + 1 } }));
-    // In Shopify: fetch('/cart/add.js', { method: 'POST', body: JSON.stringify({ id: _productId, quantity: 1 }) })
   };
 
   const formatPrice = (price: number) => `$${price.toFixed(2)}`;
 
   const getBadgeStyle = (badge: string) => {
     switch (badge) {
-      case 'Best Seller':
-        return { background: '#938977', color: '#fcfaee' };
-      case 'New Arrival':
-        return { background: '#180c04', color: '#fcfaee' };
-      case 'Sale':
-        return { background: '#c45b4a', color: '#fcfaee' };
-      case 'Top Rated':
-        return { background: '#4a7c59', color: '#fcfaee' };
-      default:
-        return { background: '#938977', color: '#fcfaee' };
+      case 'Best Seller': return { background: '#938977', color: '#fcfaee' };
+      case 'New Arrival': return { background: '#180c04', color: '#fcfaee' };
+      case 'Sale': return { background: '#c45b4a', color: '#fcfaee' };
+      case 'Top Rated': return { background: '#4a7c59', color: '#fcfaee' };
+      default: return { background: '#938977', color: '#fcfaee' };
     }
   };
 
@@ -97,82 +82,74 @@ export default function Products() {
         backgroundColor: '#fcfaee',
         position: 'relative',
         zIndex: 2,
-        padding: '100px 0 80px',
+        padding: '80px 0',
       }}
     >
       {/* Section Header */}
-      <div style={{ textAlign: 'center', padding: '0 24px 60px' }}>
-        <p
-          style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: '11px',
-            fontWeight: 600,
-            color: '#938977',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            marginBottom: '20px',
-          }}
-        >
+      <div style={{ textAlign: 'center', padding: '0 24px 48px' }}>
+        <p style={{
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: '11px',
+          fontWeight: 600,
+          color: '#938977',
+          letterSpacing: '3px',
+          textTransform: 'uppercase',
+          marginBottom: '16px',
+        }}>
           TRENDING NOW
         </p>
-        <h2
-          style={{
-            fontFamily: '"Cormorant Garamond", Georgia, serif',
-            fontSize: 'clamp(32px, 4vw, 48px)',
-            fontWeight: 500,
-            lineHeight: 1.2,
-            color: '#180c04',
-          }}
-        >
+        <h2 style={{
+          fontFamily: '"Cormorant Garamond", Georgia, serif',
+          fontSize: 'clamp(28px, 4vw, 48px)',
+          fontWeight: 500,
+          lineHeight: 1.2,
+          color: '#180c04',
+        }}>
           Pet Parent Favorites
         </h2>
       </div>
 
       {/* Product Grid */}
-      <div
-        style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '0 24px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-          gap: '32px',
-        }}
-      >
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '0 24px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+        gap: '28px',
+      }}>
         {products.map((product, i) => (
           <div
             key={product.id}
             ref={(el) => { cardRefs.current[i] = el; }}
-            className="tier-image-placeholder"
             style={{
               backgroundColor: '#ffffff',
               borderRadius: '12px',
               overflow: 'hidden',
               boxShadow: '0px 2px 10px -3px rgba(168, 142, 113, 0.15)',
               transition: 'transform 0.4s ease, box-shadow 0.4s ease',
-              opacity: 0,
               cursor: 'pointer',
+              display: 'flex',
+              flexDirection: 'column',
             }}
             onMouseEnter={(e) => {
-              const el = e.currentTarget;
-              el.style.transform = 'translateY(-4px)';
-              el.style.boxShadow = '0px 8px 24px rgba(168, 142, 113, 0.25)';
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0px 8px 24px rgba(168, 142, 113, 0.25)';
             }}
             onMouseLeave={(e) => {
-              const el = e.currentTarget;
-              el.style.transform = 'translateY(0)';
-              el.style.boxShadow = '0px 2px 10px -3px rgba(168, 142, 113, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0px 2px 10px -3px rgba(168, 142, 113, 0.15)';
             }}
           >
-            {/* Image Area */}
-            <div
-              style={{
-                aspectRatio: '1/1',
-                overflow: 'hidden',
-                backgroundColor: '#f0ecd7',
-                position: 'relative',
-              }}
-            >
+            {/* Image */}
+            <div style={{
+              width: '100%',
+              height: '220px',
+              overflow: 'hidden',
+              backgroundColor: '#f0ecd7',
+              position: 'relative',
+              flexShrink: 0,
+            }}>
               <img
                 src={product.image}
                 alt={product.name}
@@ -183,107 +160,81 @@ export default function Products() {
                   display: 'block',
                   transition: 'transform 0.6s ease',
                 }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLImageElement).style.transform = 'scale(1.05)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLImageElement).style.transform = 'scale(1)';
-                }}
+                onMouseEnter={(e) => { (e.target as HTMLImageElement).style.transform = 'scale(1.05)'; }}
+                onMouseLeave={(e) => { (e.target as HTMLImageElement).style.transform = 'scale(1)'; }}
               />
-              {/* Badge */}
-              <span
-                style={{
-                  position: 'absolute',
-                  top: '12px',
-                  left: '12px',
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  padding: '6px 12px',
-                  borderRadius: '2px',
-                  ...getBadgeStyle(product.badge),
-                }}
-              >
+              <span style={{
+                position: 'absolute',
+                top: '12px',
+                left: '12px',
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '10px',
+                fontWeight: 600,
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
+                padding: '6px 12px',
+                borderRadius: '2px',
+                ...getBadgeStyle(product.badge),
+              }}>
                 {product.badge}
               </span>
             </div>
 
-            {/* Content Area */}
-            <div style={{ padding: '20px' }}>
+            {/* Content */}
+            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
               <StarRating rating={product.rating} />
 
-              <h4
-                style={{
-                  fontFamily: '"Cormorant Garamond", Georgia, serif',
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  color: '#180c04',
-                  marginTop: '8px',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                }}
-              >
+              <h4 style={{
+                fontFamily: '"Cormorant Garamond", Georgia, serif',
+                fontSize: '18px',
+                fontWeight: 600,
+                color: '#180c04',
+                marginTop: '8px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>
                 {product.name}
               </h4>
 
-              <p
-                style={{
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: '11px',
-                  color: '#938977',
-                  marginTop: '4px',
-                }}
-              >
+              <p style={{
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '11px',
+                color: '#938977',
+                marginTop: '4px',
+              }}>
                 {product.category}
               </p>
 
-              {/* Price Row */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  marginTop: '12px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: '"Cormorant Garamond", Georgia, serif',
-                    fontSize: '22px',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    color: '#938977',
-                  }}
-                >
+              {/* Price */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '12px', flexWrap: 'wrap' }}>
+                <span style={{
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  fontSize: '22px',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: '#938977',
+                }}>
                   {formatPrice(product.price)}
                 </span>
                 {product.originalPrice && (
                   <>
-                    <span
-                      style={{
-                        fontFamily: 'Inter, system-ui, sans-serif',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#696969',
-                        textDecoration: 'line-through',
-                      }}
-                    >
+                    <span style={{
+                      fontFamily: 'Inter, system-ui, sans-serif',
+                      fontSize: '14px',
+                      color: '#696969',
+                      textDecoration: 'line-through',
+                    }}>
                       {formatPrice(product.originalPrice)}
                     </span>
-                    <span
-                      style={{
-                        fontFamily: 'Inter, system-ui, sans-serif',
-                        fontSize: '10px',
-                        color: '#c45b4a',
-                        background: 'rgba(196, 91, 74, 0.1)',
-                        padding: '2px 8px',
-                        borderRadius: '2px',
-                      }}
-                    >
+                    <span style={{
+                      fontFamily: 'Inter, system-ui, sans-serif',
+                      fontSize: '10px',
+                      color: '#c45b4a',
+                      background: 'rgba(196, 91, 74, 0.1)',
+                      padding: '2px 8px',
+                      borderRadius: '2px',
+                    }}>
                       Save {formatPrice((product.originalPrice || 0) - product.price)}
                     </span>
                   </>
@@ -309,12 +260,8 @@ export default function Products() {
                   cursor: 'pointer',
                   transition: 'background-color 0.4s ease',
                 }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = '#938977';
-                }}
-                onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.backgroundColor = '#180c04';
-                }}
+                onMouseEnter={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = '#938977'; }}
+                onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = '#180c04'; }}
               >
                 Add to Cart
               </button>
