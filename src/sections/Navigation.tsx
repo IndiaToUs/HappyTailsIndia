@@ -103,7 +103,7 @@ export default function Navigation() {
           left: 0,
           width: '100%',
           zIndex: 100,
-          padding: scrolled ? '16px 0' : '24px 0',
+          padding: scrolled ? '8px 0' : '12px 0',
           transition: 'padding 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
@@ -112,7 +112,7 @@ export default function Navigation() {
           style={{
             maxWidth: '1200px',
             margin: '0 auto',
-            padding: '14px 40px',
+            padding: '10px 20px',
             borderRadius: '2px',
             display: 'flex',
             alignItems: 'center',
