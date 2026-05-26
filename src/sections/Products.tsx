@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { products } from '../config';
+import { createCheckoutAndRedirect } from '../lib/shopify';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,10 +28,21 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
+const variantMap: { [key: number]: string } = {
+  1: "47208335147139",
+  2: "47208330952835",
+  3: "47208328691843",
+  4: "47208322039939",
+  5: "47208315748483",
+  6: "47208312995971",
+  7: "47208311062659",
+  8: "47208303755395",
+};
+
 export default function Products() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [cartCount, setCartCount] = useState(0);
+  const [loadingId, setLoadingId] = useState<number | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -57,9 +69,20 @@ export default function Products() {
     return () => ctx.revert();
   }, []);
 
-  const handleAddToCart = (_productId: number) => {
-    setCartCount((prev) => prev + 1);
-    window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: cartCount + 1 } }));
+  const handleAddToCart = async (productId: number) => {
+    const variantId = variantMap[productId];
+    if (!variantId) return;
+
+    setLoadingId(productId);
+    try {
+      const url = await createCheckoutAndRedirect(variantId);
+      window.location.href = url;
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setLoadingId(null);
+    }
   };
 
   const formatPrice = (price: number) => `$${price.toFixed(2)}`;
@@ -244,10 +267,11 @@ export default function Products() {
               {/* Add to Cart */}
               <button
                 onClick={() => handleAddToCart(product.id)}
+                disabled={loadingId === product.id}
                 style={{
                   width: '100%',
                   marginTop: '16px',
-                  backgroundColor: '#180c04',
+                  backgroundColor: loadingId === product.id ? '#938977' : '#180c04',
                   color: '#fcfaee',
                   fontFamily: 'Inter, system-ui, sans-serif',
                   fontSize: '11px',
@@ -257,13 +281,19 @@ export default function Products() {
                   padding: '12px 0',
                   borderRadius: '2px',
                   border: 'none',
-                  cursor: 'pointer',
+                  cursor: loadingId === product.id ? 'not-allowed' : 'pointer',
                   transition: 'background-color 0.4s ease',
                 }}
-                onMouseEnter={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = '#938977'; }}
-                onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.backgroundColor = '#180c04'; }}
+                onMouseEnter={(e) => {
+                  if (loadingId !== product.id)
+                    (e.target as HTMLButtonElement).style.backgroundColor = '#938977';
+                }}
+                onMouseLeave={(e) => {
+                  if (loadingId !== product.id)
+                    (e.target as HTMLButtonElement).style.backgroundColor = '#180c04';
+                }}
               >
-                Add to Cart
+                {loadingId === product.id ? 'Redirecting...' : 'Add to Cart'}
               </button>
             </div>
           </div>
